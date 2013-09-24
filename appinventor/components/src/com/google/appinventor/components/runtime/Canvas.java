@@ -1123,7 +1123,26 @@ public final class Canvas extends AndroidViewComponent implements ComponentConta
     view.canvas.drawCircle(x, y, r, paint);
     view.invalidate();
   }
-
+  
+  /**
+   * Draws an arc at the indicated points.
+   * 
+   * @param bottom
+   * @param left
+   * @param right
+   * @param top
+   * @param startAngle
+   * @param sweepAngle
+   * @param filled
+   */
+  @SimpleFunction
+  public void DrawSegment(float bottom, float left, float right, float top,
+		  float startAngle, float sweepAngle, boolean filled) {
+	  RectF oval = new RectF(left, top, right, bottom);
+	  view.canvas.drawArc(oval, startAngle, sweepAngle, true, paint);
+	  view.invalidate();
+  }
+  
   /**
    * Draws a line between the given coordinates on the canvas.
    *

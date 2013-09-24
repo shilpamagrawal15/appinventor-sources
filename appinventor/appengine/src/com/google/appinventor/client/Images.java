@@ -434,4 +434,10 @@ public interface Images extends Resources {
    */
   @Source("com/google/appinventor/images/procedures.png")
   ImageResource procedures();
+  
+  /**
+   * Designer palette item: ASSIGNMENT 3 COMMPONENT LOGGER2 ICON
+   */
+  @Source("com/google/appinventor/images/logger2.png")
+  ImageResource logger2();
 }
