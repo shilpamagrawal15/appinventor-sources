@@ -189,13 +189,44 @@ Blockly.Language.lists_pick_random_item = {
   init : function() {
     this.setColour(Blockly.LIST_CATEGORY_HUE);
     this.setOutput(true, null);
-    this.appendValueInput('LIST').setCheck(Blockly.Language.YailTypeToBlocklyType("list",Blockly.Language.INPUT)).appendTitle('pick a random item').appendTitle('list');
+    
+    var dropDown = new Blockly.FieldDropdown(this.OPERATORS);
+
+    this.appendValueInput('LIST')
+    .setCheck(Blockly.Language.YailTypeToBlocklyType("list",Blockly.Language.INPUT))
+    .appendTitle('pick')
+    .appendTitle(dropDown, 'OP').appendTitle('item from the list').appendTitle('list');
+
     Blockly.Language.setTooltip(this, Blockly.LANG_LISTS_PICK_RANDOM_TOOLTIP);
     this.appendCollapsedInput().appendTitle('pick random', 'COLLAPSED_TEXT');
   },
   onchange: Blockly.WarningHandler.checkErrors,
-  typeblock: [{ translatedName: Blockly.LANG_LISTS_PICK_RANDOM_TITLE_PICK_RANDOM }]
+  typeblock: [{ 
+    translatedName: Blockly.LANG_LISTS_PICK_RANDOM_TITLE_PICK_RANDOM,
+    dropDown: {
+      titleName: 'RANDOM',
+      value: 'RANDOM_VALUE'
+    }
+  },{
+    translatedName: Blockly.LANG_LISTS_PICK_FIRST_TITLE_PICK_RANDOM,
+    dropDown: {
+      titleName: 'FIRST',
+      value: 'FIRST_VALUE'
+    }
+  },{
+    translatedName: Blockly.LANG_LISTS_PICK_LAST_TITLE_PICK_RANDOM,
+    dropDown: {
+      titleName: 'LAST',
+      value: 'LAST_VALUE'
+    }
+  }]
 };
+
+Blockly.Language.lists_pick_random_item.OPERATORS =
+  [[ 'Random', 'RANDOM_VALUE' ],
+   [ 'Last', 'LAST_VALUE'],
+   [ 'First', 'FIRST_VALUE' ]];
+
 
 Blockly.Language.lists_position_in = {
   // Postion of item in list.

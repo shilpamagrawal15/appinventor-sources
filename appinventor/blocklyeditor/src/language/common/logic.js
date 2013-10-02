@@ -251,3 +251,22 @@ Blockly.Language.logic_or = {
   }
 };
 
+Blockly.Language.logic_negate_negate = {
+  // Double Negation.
+  category : Blockly.LANG_CATEGORY_LOGIC,
+  helpUrl : Blockly.LANG_LOGIC_NEGATE_NEGATE_HELPURL,
+  init : function() {
+    this.setColour(Blockly.LOGIC_CATEGORY_HUE);
+    this.setOutput(true,
+        Blockly.Language.YailTypeToBlocklyType("boolean",Blockly.Language.OUTPUT));
+    this.appendValueInput('BOOL')
+      .setCheck(Blockly.Language.YailTypeToBlocklyType("boolean",Blockly.Language.INPUT))
+      .appendTitle('not-not');
+    this.setTooltip(Blockly.LANG_LOGIC_NEGATE_NEGATE_TOOLTIP);
+    this.appendCollapsedInput().appendTitle('not-not', 'COLLAPSED_TEXT');
+  },
+  onchange: Blockly.WarningHandler.checkErrors,
+  typeblock: [{ translatedName:Blockly.LANG_LOGIC_NEGATE_NEGATE_INPUT_NOT }]
+};
+
+

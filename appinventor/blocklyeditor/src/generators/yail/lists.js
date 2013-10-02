@@ -201,13 +201,26 @@ Blockly.Yail.lists_position_in = function() {
 Blockly.Yail.lists_pick_random_item = function() {
   // Pick random item
   var argument0 = Blockly.Yail.valueToCode(this, 'LIST', Blockly.Yail.ORDER_NONE) || Blockly.Yail.emptyListCode;
-  var code = Blockly.Yail.YAIL_CALL_YAIL_PRIMITIVE + "yail-list-pick-random" + Blockly.Yail.YAIL_SPACER;
+  var code = '';
+  var msg = "";
+  if (this.getTitleValue('OP') == 'RANDOM_VALUE') {
+    code = Blockly.Yail.YAIL_CALL_YAIL_PRIMITIVE + "yail-list-pick-random" + Blockly.Yail.YAIL_SPACER;
+    msg = "pick random item";
+  }
+  else if (this.getTitleValue('OP') == 'FIRST_VALUE') {
+    code = Blockly.Yail.YAIL_CALL_YAIL_PRIMITIVE + "yail-list-pick-first" + Blockly.Yail.YAIL_SPACER;
+    msg = "pick first item";
+  }
+  else if (this.getTitleValue('OP') == 'LAST_VALUE') {
+    code = Blockly.Yail.YAIL_CALL_YAIL_PRIMITIVE + "yail-list-pick-last" + Blockly.Yail.YAIL_SPACER;
+    msg = "pick last item";
+  }
   code = code + Blockly.Yail.YAIL_OPEN_COMBINATION + Blockly.Yail.YAIL_LIST_CONSTRUCTOR + Blockly.Yail.YAIL_SPACER;
   code = code + argument0;
   code = code + Blockly.Yail.YAIL_SPACER + Blockly.Yail.YAIL_CLOSE_COMBINATION;
   code = code + Blockly.Yail.YAIL_SPACER + Blockly.Yail.YAIL_QUOTE + Blockly.Yail.YAIL_OPEN_COMBINATION;
   code = code + "list" + Blockly.Yail.YAIL_CLOSE_COMBINATION + Blockly.Yail.YAIL_SPACER;
-  code = code + Blockly.Yail.YAIL_DOUBLE_QUOTE + "pick random item" + Blockly.Yail.YAIL_DOUBLE_QUOTE + Blockly.Yail.YAIL_CLOSE_COMBINATION;
+  code = code + Blockly.Yail.YAIL_DOUBLE_QUOTE + msg + Blockly.Yail.YAIL_DOUBLE_QUOTE + Blockly.Yail.YAIL_CLOSE_COMBINATION;
   return [ code, Blockly.Yail.ORDER_ATOMIC ];
 };
 

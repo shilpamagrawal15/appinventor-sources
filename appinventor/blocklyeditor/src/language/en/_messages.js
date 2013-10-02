@@ -253,6 +253,12 @@ Blockly.LANG_LOGIC_BOOLEAN_FALSE = 'false';
 Blockly.LANG_LOGIC_BOOLEAN_TOOLTIP_TRUE = 'Returns the boolean true.';
 Blockly.LANG_LOGIC_BOOLEAN_TOOLTIP_FALSE = 'Returns the boolean false.';
 
+// Not-not block
+Blockly.LANG_LOGIC_NEGATE_NEGATE_HELPURL = 'http://appinventor.mit.edu/explore/ai2/support/blocks/logic#notnot';
+Blockly.LANG_LOGIC_NEGATE_NEGATE_INPUT_NOT = 'notnot';
+Blockly.LANG_LOGIC_NEGATE_NEGATE_TOOLTIP = 'Returns true if the input is true.\n' +
+  'Returns false if the input is false.';
+
 // Math Blocks.
 Blockly.LANG_CATEGORY_MATH = 'Math';
 Blockly.LANG_MATH_NUMBER_HELPURL = 'http://appinventor.mit.edu/explore/ai2/support/blocks/math#number';
@@ -608,6 +614,8 @@ Blockly.LANG_LISTS_POSITION_IN_TOOLTIP = 'Find the position of the thing in the 
 
 Blockly.LANG_LISTS_PICK_RANDOM_ITEM_HELPURL = 'http://appinventor.mit.edu/explore/ai2/support/blocks/lists#pickrandomitem';
 Blockly.LANG_LISTS_PICK_RANDOM_TITLE_PICK_RANDOM = 'pick a random item';
+Blockly.LANG_LISTS_PICK_FIRST_TITLE_PICK_RANDOM = 'pick first item';
+Blockly.LANG_LISTS_PICK_LAST_TITLE_PICK_RANDOM = 'pick last item';
 Blockly.LANG_LISTS_PICK_RANDOM_ITEM_INPUT_LIST = 'list';
 Blockly.LANG_LISTS_PICK_RANDOM_TOOLTIP = 'Pick an item at random from the list.';
 
