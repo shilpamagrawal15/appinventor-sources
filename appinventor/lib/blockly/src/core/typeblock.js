@@ -414,6 +414,7 @@ Blockly.TypeBlock.createAutoComplete_ = function(inputText){
   var inputHandler = new goog.ui.ac.InputHandler(null, null, false);
 
   Blockly.TypeBlock.ac_ = new goog.ui.ac.AutoComplete(matcher, renderer, inputHandler);
+  Blockly.TypeBlock.ac_.setMaxMatches(100); //Renderer has a set height of 294px and a scroll bar.
   inputHandler.attachAutoComplete(Blockly.TypeBlock.ac_);
   inputHandler.attachInputs(goog.dom.getElement(inputText));
 
@@ -426,7 +427,7 @@ Blockly.TypeBlock.createAutoComplete_ = function(inputText){
         //If the input passed is not a block, check if it is a number or a pre-populated text block
         var numberReg = new RegExp('^-?[0-9]\\d*(\.\\d+)?$', 'g');
         var numberMatch = numberReg.exec(blockName);
-        var textReg = new RegExp('^[\"|\'].+', 'g');
+        var textReg = new RegExp('^[\"|\']+', 'g');
         var textMatch = textReg.exec(blockName);
         if (numberMatch && numberMatch.length > 0){
           blockToCreate = {
@@ -454,13 +455,17 @@ Blockly.TypeBlock.createAutoComplete_ = function(inputText){
       var block;
       if (blockToCreate.dropDown){ //All blocks should have a dropDown property, even if empty
         blockToCreateName = blockToCreate.canonicName;
-        if(blockToCreate.mutatorAttributes) {
+        // components have mutator attributes we need to deal with. We can also add these for special blocks
+        //   e.g., this is done for create empty list
+        if(!goog.object.isEmpty(blockToCreate.mutatorAttributes)) {
           //construct xml
           var xmlString = '<xml><block type="' + blockToCreateName + '"><mutation ';
           for(var attributeName in blockToCreate.mutatorAttributes) {
             xmlString += attributeName + '="' + blockToCreate.mutatorAttributes[attributeName] + '" ';
           }
-          xmlString += '></mutation></block></xml>';
+
+          xmlString += '>';
+          xmlString += '</mutation></block></xml>';
           var xml = Blockly.Xml.textToDom(xmlString);
           block = Blockly.Xml.domToBlock_(Blockly.mainWorkspace, xml.firstChild);
 
@@ -487,11 +492,6 @@ Blockly.TypeBlock.createAutoComplete_ = function(inputText){
       }
 
       block.render();
-      //If we are creating a local variable, we need to update the mutator names
-      if (block.type && (block.type === 'local_declaration_expression' ||
-              block.type === 'local_declaration_statement')){
-        block.domToMutation(block.mutationToDom());
-      }
       var blockSelected = Blockly.selected;
       var selectedX, selectedY, selectedXY;
       if (blockSelected) {
@@ -556,13 +556,32 @@ Blockly.TypeBlock.connectIfPossible = function(blockSelected, createdBlock) {
   }
   if (createdBlock.parentBlock_ !== null) return; //Already connected --> return
 
+  // Are both blocks statement blocks? If so, connect created block below the selected block
+  if (blockSelected.outputConnection == null && createdBlock.outputConnection == null) {
+      createdBlock.previousConnection.connect(blockSelected.nextConnection);
+      return;
+  }
+
   // No connections? Try the parent (if it exists)
   if (blockSelected.parentBlock_) {
-    //recursive call: creates the inner functions again, but should not be much
-    //overhead; if it is, optimise!
-    Blockly.TypeBlock.connectIfPossible(blockSelected.parentBlock_, createdBlock);
-  }
-};
+    //Is the parent block a statement?
+    if (blockSelected.parentBlock_.outputConnection == null) {
+        //Is the created block a statment? If so, connect it below the parent block,
+        // which is a statement
+        if(createdBlock.outputConnection == null) {
+          blockSelected.parentBlock_.nextConnection.connect(createdBlock.previousConnection);
+          return;
+        //If it's not, no connections should be made
+        } else return;
+      }
+      else {
+        //try the parent for other connections
+        Blockly.TypeBlock.connectIfPossible(blockSelected.parentBlock_, createdBlock);
+        //recursive call: creates the inner functions again, but should not be much
+        //overhead; if it is, optimise!
+      }
+    }
+  };
 
 //--------------------------------------
 // A custom matcher for the auto-complete widget that can handle numbers as well as the default
@@ -596,6 +615,13 @@ Blockly.TypeBlock.ac.AIArrayMatcher.prototype.requestMatchingRows = function(tok
 
   var matches = this.getPrefixMatches(token, maxMatches);
 
+  //Because we allow for similar matches, Button.Text will always appear before Text
+  //So we handle the 'text' case as a special case here
+  if (token === 'text' || token === 'Text'){
+    goog.array.remove(matches, 'Text');
+    goog.array.insertAt(matches, 'Text', 0);
+  }
+
   // Added code to handle any number typed in the widget (including negatives and decimals)
   var reg = new RegExp('^-?[0-9]\\d*(\.\\d+)?$', 'g');
   var match = reg.exec(token);
@@ -604,7 +630,7 @@ Blockly.TypeBlock.ac.AIArrayMatcher.prototype.requestMatchingRows = function(tok
   }
 
   // Added code to handle default values for text fields (they start with " or ')
-  var textReg = new RegExp('^[\"|\'].+', 'g');
+  var textReg = new RegExp('^[\"|\']+', 'g');
   var textMatch = textReg.exec(token);
   if (textMatch && textMatch.length === 1){
     matches.push(token);

@@ -231,8 +231,12 @@ public class YaVersion {
   // - FORM_COMPONENT_VERSION was incremented to 11.
   // For YOUNG_ANDROID_VERSION 80:
   // - LISTPICKER_COMPONENT_VERSION was incremented to 7.
+  // For YOUNG_ANDROID_VERSION 81:
+  // - NOTIFIER_COMPONENT_VERSION was incremented to 3.
+  // For YOUNG_ANDROID_VERSION 82:
+  // - ACCELEROMETERSENSOR_COMPONENT_VERSION was incremented to 3;
 
-    public static final int YOUNG_ANDROID_VERSION = 80;
+    public static final int YOUNG_ANDROID_VERSION = 82;
 
   // ............................... Blocks Language Version Number ...............................
 
@@ -304,7 +308,9 @@ public class YaVersion {
   // - AccelerometerSensor.MinimumInterval property was added.
   // - AccelerometerSensor.AccelerationChanged method was modified to wait for
   //   the minimum interval to elapse before calling a shaking event when necessary.
-  public static final int ACCELEROMETERSENSOR_COMPONENT_VERSION = 2;
+  //For ACCELEROMETERSENSOR_COMPONENT_VERSION 3:
+  // - AccelerometerSensor.Sensitivty property was added.
+  public static final int ACCELEROMETERSENSOR_COMPONENT_VERSION = 3;
 
   // For ACTIVITYSTARTER_COMPONENT_VERSION 2:
   // - The ActivityStarter.DataType, ActivityStarter.ResultType, and ActivityStarter.ResultUri
@@ -505,7 +511,9 @@ public class YaVersion {
 
   // For NOTIFIER_COMPONENT_VERSION 2:
   // - To ShowChooseDialog and ShowTextDialog, new arg was added to indicate if dialog is cancelable
-  public static final int NOTIFIER_COMPONENT_VERSION = 2;
+  // For NOTIFIER_COMPONENT_VERSION 3:
+  // - Added NotifierColor, TextColor and NotifierLength options
+  public static final int NOTIFIER_COMPONENT_VERSION = 3;
 
   // For ORIENTATIONSENSOR_COMPONENT_VERSION = 2:
   // - The Yaw property was renamed to Azimuth.
@@ -643,5 +651,9 @@ public class YaVersion {
   // For SLIDER_COMPONENT_VERSION 1:
   // - Initial version.
   public static final int SLIDER_COMPONENT_VERSION = 1;
+
+  // Companion Versions
+  public static final String PREFERRED_COMPANION = "2.08ai2";
+  public static final String [] ACCEPTABLE_COMPANIONS = { "2.08ai2", "2.07nb9zx1", "2.07nb9" };
 
 }

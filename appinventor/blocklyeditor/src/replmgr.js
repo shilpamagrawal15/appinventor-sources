@@ -293,10 +293,7 @@ Blockly.ReplMgr.putYail = (function() {
                         return;
                     } else {
                         var json = goog.json.parse(this.response);
-                        var version = json.version.substr(0,7);
-                        if (version != "2.07nb6" &&
-                            version != "2.07nb7" &&
-                            version != "2.07nb8") {
+                        if (!Blockly.ReplMgr.acceptableVersion(json.version)) {
                             engine.showversioncompmessage(true);
                             engine.resetcompanion();
                             return;
@@ -306,8 +303,7 @@ Blockly.ReplMgr.putYail = (function() {
                     return;
                 }
                 if (this.readyState == 4) { // Old Companion, doesn't do CORS so we fail to talk to it
-                    rs.didversioncheck = true;
-                    engine.showversioncompmessage(true);
+                    var dialog = new Blockly.ReplMgr.Dialog("Network Error", "Network Error Communicating with Companion.<br />Try restarting the Companion and re-connecting", "OK", 0, function() { dialog.hide(); });
                     engine.resetcompanion();
                     return;
                 }
@@ -352,7 +348,7 @@ Blockly.ReplMgr.putYail = (function() {
         "showversioncompmessage" : function(fatal) {
             var dialog;
             if (fatal) {
-                dialog = new Blockly.ReplMgr.Dialog("Companion Version Check", "The Companion you are using is not compatible with this version of AI2.", "OK", 0, function() { dialog.hide();});
+                dialog = new Blockly.ReplMgr.Dialog("Companion Version Check", "The Companion you are using is not compatible with this version of AI2.<br/><br/>This Version of App Inventor wants Companion version" + window.parent.PREFERRED_COMPANION, "OK", 0, function() { dialog.hide();});
             } else {
                 dialog = new Blockly.ReplMgr.Dialog("Companion Version Check", "You are using an out-of-date Companion, you should consider updating to the latest version.", "Dismiss", 1, function() { dialog.hide();});
             }
@@ -361,6 +357,15 @@ Blockly.ReplMgr.putYail = (function() {
     engine.putYail.reset = engine.reset;
     return engine.putYail;
 })();
+
+Blockly.ReplMgr.acceptableVersion = function(version) {
+    for (var i = 0; i < window.parent.ACCEPTABLE_COMPANIONS.length; i++) {
+        if (window.parent.ACCEPTABLE_COMPANIONS[i] == version) {
+            return true;
+        }
+    }
+    return false;
+};
 
 Blockly.ReplMgr.processRetvals = function(responses) {
     var block;
@@ -508,7 +513,7 @@ Blockly.ReplMgr.startAdbDevice = function(rs, usb) {
                     }
                     if (!dialog) {
                         window.parent.BlocklyPanel_indicateDisconnect();
-                        dialog = new Blockly.ReplMgr.Dialog("Helper?", 'The aiDaemon helper does not appear to be running<br /><a href="http://appinventor.mit.edu" target="_blank">Need Help?</a>', "OK", 0, function() {
+                        dialog = new Blockly.ReplMgr.Dialog("Helper?", 'The aiStarter helper does not appear to be running<br /><a href="http://appinventor.mit.edu" target="_blank">Need Help?</a>', "OK", 0, function() {
                             dialog.hide();
                             dialog = null;
                             if (progdialog) {
@@ -624,6 +629,7 @@ Blockly.ReplMgr.startRepl = function(already, emulator, usb) {
         }
         this.resetYail();
         window.parent.ReplState.state = this.rsState.IDLE;
+        this.hardreset();       // Tell aiStarter to kill off adb
     }
 };
 
@@ -779,6 +785,13 @@ Blockly.ReplMgr.putAsset = function(filename, blob) {
     }
     conn.send(arraybuf);
     return true;
+};
+
+Blockly.ReplMgr.hardreset = function() {
+    var xhr = goog.net.XmlHttp();
+    xhr.open("GET", "http://localhost:8004/reset/", true);
+    xhr.onreadystatechange = function() {}; // Ignore errors
+    xhr.send();
 };
 
 //---------------------------------------------------------------------
