@@ -966,6 +966,6 @@ Blockly.Language.procedures_earlyreturn = {
     this.appendCollapsedInput().appendTitle('open screen', 'COLLAPSED_TEXT');
   },
   onchange: Blockly.WarningHandler.checkErrors,
-  typeblock: [{ translatedName: Blockly.LANG_CONTROLS_OPEN_ANOTHER_SCREEN_TITLE }]
+  typeblock: [{ translatedName: Blockly.LANG_CONTROLS_OPEN_ANOTHER_SCREEN_TITLE }],
+  errors: [{name:"checkIsInReturnProc"}]
 };
-

@@ -41,9 +41,19 @@ Blockly.Yail.procedures_defreturn = function() {
   var returnVal = Blockly.Yail.valueToCode(this, 'RETURN', Blockly.Yail.ORDER_NONE) || Blockly.Yail.YAIL_FALSE;
   var code = Blockly.Yail.YAIL_DEFINE + Blockly.Yail.YAIL_OPEN_COMBINATION + procName
       + Blockly.Yail.YAIL_SPACER + args + Blockly.Yail.YAIL_CLOSE_COMBINATION 
-      + Blockly.Yail.YAIL_SPACER + returnVal + Blockly.Yail.YAIL_CLOSE_COMBINATION;
+      + "(call-with-current-continuation (lambda (early-return) "
+      + Blockly.Yail.YAIL_SPACER + returnVal 
+      + "))"
+      + Blockly.Yail.YAIL_CLOSE_COMBINATION;
   return code;
 };
+
+// Generator for Early Return
+Blockly.Yail.procedures_earlyreturn = function() {
+  var arg_code = Blockly.Yail.valueToCode(this, 'RETURN_VALUE', Blockly.Yail.ORDER_NONE) || Blockly.Yail.YAIL_FALSE;
+  var code = "(early-return " + arg_code + ")";
+  return code;
+}
 
 // Generator code for procedure call with return
 Blockly.Yail.procedures_defnoreturn = function() {

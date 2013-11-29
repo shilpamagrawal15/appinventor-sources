@@ -221,6 +221,23 @@ Blockly.WarningHandler.setBlockError = function(message){
   this.setErrorIconText(message);
 }
 
+// (author: shilpa agrawal 11/20/13)
+//Check if the early return block is inside of a Procedure that returns a value
+Blockly.WarningHandler.checkIsInReturnProc = function(){
+  var rootBlock = this.getRootBlock();
+  if(rootBlock.type != "procedures_defreturn") {
+    var errorMessage = "This block can only be used in a Procedure that returns a value"
+    if (this.errorIcon) {
+      this.errorIcon.setText(errorMessage);
+    } else {
+      this.setErrorIconText(errorMessage);
+    }
+    return true;
+  } else {
+    return false;
+  }
+}
+
 //Warnings
 
 //Warnings indicate that there is a problem with the project, but it will not run
