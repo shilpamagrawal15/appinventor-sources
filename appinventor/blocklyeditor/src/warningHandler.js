@@ -232,7 +232,7 @@ Blockly.WarningHandler.setBlockError = function(message){
 Blockly.WarningHandler.checkIsInReturnProc = function(){
   var rootBlock = this.getRootBlock();
   if(rootBlock.type != "procedures_defreturn") {
-    var errorMessage = "This block can only be used in a Procedure that returns a value"
+    var errorMessage = "This block can only be used in a procedure that returns a value"
     if (this.errorIcon) {
       this.errorIcon.setText(errorMessage);
     } else {

@@ -838,7 +838,7 @@ Blockly.LANG_PROCEDURES_CALLRETURN_PROCEDURE = Blockly.LANG_PROCEDURES_CALLNORET
 Blockly.LANG_PROCEDURES_CALLRETURN_COLLAPSED_PREFIX = 'call ';
 Blockly.LANG_PROCEDURES_CALLRETURN_TOOLTIP = 'Call a procedure with a return value.';
 
-Blockly.LANG_PROCEDURES_EARLYRETURN_TOOLTIP = 'This is the early return block';
+Blockly.LANG_PROCEDURES_EARLYRETURN_TOOLTIP = 'Leave the procedure immediately with the given value.';
 
 Blockly.LANG_PROCEDURES_MUTATORCONTAINER_TITLE = 'inputs';
 Blockly.LANG_PROCEDURES_MUTATORARG_TITLE = 'input:';

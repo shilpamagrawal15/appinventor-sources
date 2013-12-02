@@ -953,6 +953,7 @@ Blockly.Language.procedures_callreturn = {
   }
 };
 
+// connector above
 Blockly.Language.procedures_earlyreturn = {
   // Early Return mockup
   category: 'Procedures',
@@ -962,6 +963,23 @@ Blockly.Language.procedures_earlyreturn = {
     this.appendValueInput('RETURN_VALUE').appendTitle('exit procedure with').appendTitle('value').setAlign(Blockly.ALIGN_RIGHT).setCheck(Blockly.Language.YailTypeToBlocklyType("text",Blockly.Language.INPUT));
     this.setPreviousStatement(true); // puts notch above
     this.setNextStatement(false);    // puts no notch at the bottom
+    Blockly.Language.setTooltip(this, Blockly.LANG_PROCEDURES_EARLYRETURN_TOOLTIP);
+    this.appendCollapsedInput().appendTitle('open screen', 'COLLAPSED_TEXT');
+  },
+  onchange: Blockly.WarningHandler.checkErrors,
+  typeblock: [{ translatedName: Blockly.LANG_CONTROLS_OPEN_ANOTHER_SCREEN_TITLE }],
+  errors: [{name:"checkIsInReturnProc"}]
+};
+
+// plug to be a value
+Blockly.Language.procedures_earlyreturn_expression = {
+  // Early Return mockup
+  category: 'Procedures',
+  helpUrl : Blockly.LANG_PROCEDURES_EARLYRETURN_HELPURL,
+  init : function() {
+    this.setColour(Blockly.PROCEDURE_CATEGORY_HUE);
+    this.appendValueInput('RETURN_VALUE').appendTitle('exit procedure with').appendTitle('value').setAlign(Blockly.ALIGN_RIGHT).setCheck(Blockly.Language.YailTypeToBlocklyType("text",Blockly.Language.INPUT));
+    this.setOutput(true, null); // puts plug connector to make block into a value-block
     Blockly.Language.setTooltip(this, Blockly.LANG_PROCEDURES_EARLYRETURN_TOOLTIP);
     this.appendCollapsedInput().appendTitle('open screen', 'COLLAPSED_TEXT');
   },
