@@ -59,7 +59,7 @@ Blockly.Yail.procedures_earlyreturn = function() {
 Blockly.Yail.procedures_earlyreturn_expression = function() {
   var arg_code = Blockly.Yail.valueToCode(this, 'RETURN_VALUE', Blockly.Yail.ORDER_NONE) || Blockly.Yail.YAIL_FALSE;
   var code = "(early-return " + arg_code + ")";
-  return code;
+  return [code,Blockly.Yail.ORDER_ATOMIC];
 }
 
 // Generator code for procedure call with return
